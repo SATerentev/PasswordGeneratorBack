@@ -21,8 +21,8 @@ namespace PassGeneratorService.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
-        public IActionResult GeneratePassword(GenerationRequest requestData)
+        [HttpGet("generate")]
+        public async Task<IActionResult> GeneratePassword([FromQuery] GenerationRequest requestData)
         {
             if (requestData == null)
             {
@@ -47,7 +47,7 @@ namespace PassGeneratorService.Controllers
                 requestData.IncludeSymbols
                 );
 
-            _repository.SavePassword(password);
+            await _repository.SavePassword(password);
 
             return Ok(new GenerationResponse { Password = password.Value });
         }

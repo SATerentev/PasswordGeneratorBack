@@ -5,16 +5,32 @@ namespace PassGeneratorService.Infrastructure.Repositories
 {
     public class PasswordRepository : IPasswordRepository
     {
-        private readonly DbContext _context;
+        private readonly AppDbContext _context;
 
-        public PasswordRepository(DbContext context)
+        public PasswordRepository(AppDbContext context)
         {
             _context = context;
         }
 
-        public Task<bool> SavePassword(Password password)
+        public async Task<bool> SavePassword(Password password)
         {
+            bool success = true;
 
+            try
+            {
+                await _context.Passwords.AddAsync(password);
+                await _context.SaveChangesAsync();
+            } catch
+            {
+                success = false;
+            }
+
+            if (success)
+                Console.WriteLine("Новый пароль: " + password.Value);
+            else
+                Console.WriteLine("Ошибка БД");
+
+            return success;
         }
     }
 }

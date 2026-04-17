@@ -6,6 +6,8 @@
         public string Value { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
+        public Password() { }
+
         public Password(string pass)
         {
             if (string.IsNullOrWhiteSpace(pass))
